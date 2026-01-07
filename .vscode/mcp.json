@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "Sentry": {
+      "url": "https://mcp.sentry.dev/mcp/giuseppe-troiano-design-und-fo/javascript-nextjs",
+      "type": "http"
+    }
+  }
+}
