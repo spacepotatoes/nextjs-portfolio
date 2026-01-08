@@ -1,0 +1,43 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  title            String
+  slug             String   @unique // Für SEO-URLs: /projects/mein-cooles-projekt
+  
+  // Kategorisierung
+  category         String   // "Design", "Coding" oder "Fullstack"
+  isFeatured       Boolean  @default(false)
+
+  // Beschreibungen
+  shortDescription String   // Teaser für die Grid-Übersicht
+  description      String   // Ausführliche Einleitung
+  
+  // Der "Case Study" Bereich
+  approach         String?  // Text: "Mein Vorgehen"
+  challenges       String?  // Text: "Herausforderungen & Lösungen"
+  role             String?  // z.B. "UI/UX Designer & Lead Developer"
+
+  // Medien & Links
+  imageUrl         String?  // Haupt-Thumbnail
+  galleryImages    String[] // Weitere Screenshots oder Design-Assets
+  behanceUrl       String?  // Link zur visuellen Case Study auf Behance
+  liveLink         String?  // URL zur Live-Demo
+  githubLink       String?  // Link zum Repository
+
+  // Skills & Tools
+  techStack        String[] // z.B. ["Next.js", "TypeScript", "Tailwind"]
+  designTools      String[] // z.B. ["Figma", "Adobe Illustrator"]
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
