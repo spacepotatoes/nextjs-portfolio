@@ -2,8 +2,9 @@
 
 import { auth } from "@clerk/nextjs/server"
 import { PrismaClient } from "@prisma/client"
-import { revalidatePath } from "next/cache"
+import { revalidatePath, unstable_noStore } from "next/cache"
 import { redirect } from "next/navigation"
+
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
@@ -112,5 +113,65 @@ export async function deleteProject(id: string) {
   } catch (error) {
     console.error("Fehler beim Löschen:", error);
     return { success: false };
+  }
+}
+
+export async function getAllProjectSlugs() {
+  try {
+    const projects = await prisma.project.findMany({
+      select: {
+        slug: true,
+      },
+    });
+    // Gibt ein Array von { slug: string } Objekten zurück
+    return projects; 
+  } catch (error) {
+    console.error("Fehler beim Abrufen aller Slugs:", error);
+    return [];
+  }
+}
+
+export async function getProjectBySlug(slug: string) {
+  unstable_noStore(); // ← wichtig! verhindert aggressive Action-Caching
+
+  if (!slug || typeof slug !== 'string' || slug.trim() === '') {
+    return null;
+  }
+
+  try {
+    // Variante A – am stabilsten aktuell
+    return await prisma.project.findFirst({
+      where: { slug },
+    });
+
+    // Variante B – wenn du findUnique unbedingt willst (nach Fix unten)
+    // return await prisma.project.findUnique({ where: { slug } });
+  } catch (e) {
+    console.error('getProjectBySlug Fehler:', e);
+    return null;
+  }
+}
+
+export async function getAllProjects() {
+  try {
+    const projects = await prisma.project.findMany({
+      orderBy: {
+        createdAt: 'desc', // Neueste Projekte zuerst
+      },
+      // Wähle nur die Felder, die für die Projektkarte in der Übersicht benötigt werden
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        category: true,
+        shortDescription: true,
+        imageUrl: true,
+        techStack: true,
+      }
+    });
+    return projects;
+  } catch (error) {
+    console.error("Fehler beim Abrufen aller Projekte:", error);
+    return [];
   }
 }

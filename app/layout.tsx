@@ -1,3 +1,4 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import {
@@ -8,9 +9,10 @@ import {
   SignedOut,
   UserButton,
 } from '@clerk/nextjs';
-
 import "./globals.css";
 import { ThemeProvider } from "./provider";
+import { FloatingNav } from "@/components/ui/FloatingNavbar";
+import { navItems } from "@/data";  // ← importiere deine navItems auch hier
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -37,13 +39,17 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {/* Header im Layout */}
+            {/* Floating Navigation – jetzt global auf allen Seiten */}
+            <FloatingNav navItems={navItems} />
+
+            {/* Clerk User Button (optional rechts oben) */}
             <header className="fixed top-4 right-4 z-[9999]">
               <SignedIn>
                 <UserButton afterSignOutUrl="/" />
               </SignedIn>
-              {/* <SignedOut> Teil einfach löschen oder auskommentieren */}
             </header>
+
+            {/* Hauptinhalt */}
             {children}
           </ThemeProvider>
         </body>

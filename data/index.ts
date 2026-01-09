@@ -1,6 +1,6 @@
 export const navItems = [
-  { name: "About", link: "#about" },
-  { name: "Projects", link: "#projects" },
+  { name: "Home", link: "/" },
+  { name: "Projects", link: "/projects" },
   { name: "Testimonials", link: "#testimonials" },
   { name: "Experience", link: "#experience" },
   { name: "Contact", link: "#contact" },
@@ -216,3 +216,38 @@ export const socialMedia = [
     img: "/link.svg",
   },
 ];
+
+export const availableTech = [
+  // Coding
+  { name: "React", icon: "/re.svg" },
+  { name: "Next.js", icon: "/next.svg" },
+  { name: "Tailwind", icon: "/tail.svg" },
+  { name: "TypeScript", icon: "/ts.svg" },
+  { name: "PHP", icon: "/php.svg" },
+  { name: "MySQL", icon: "/mysql.svg" },
+  { name: "MongoDB", icon: "/mongodb.svg" },
+  { name: "Linux", icon: "/linux.svg" },
+  
+  // Design & Tools
+  { name: "Figma", icon: "/figma.svg" },
+  { name: "Photoshop", icon: "/ps.svg" },
+  { name: "Illustrator", icon: "/ai.svg" },
+  { name: "InDesign", icon: "/id.svg" },
+  { name: "Cursor", icon: "/cursor.svg" },
+  
+  // CMS & No-Code
+  { name: "WordPress", icon: "/wordpress.svg" },
+  { name: "Elementor", icon: "/elementor.svg" },
+  { name: "Webflow", icon: "/webflow.svg" },
+  
+  // Animation & 3D
+  { name: "Three.js", icon: "/three.svg" },
+  { name: "Framer Motion", icon: "/fm.svg" },
+  { name: "GSAP", icon: "/gsap.svg" },
+];
+
+// Automatische Generierung des Mappings für RecentProjects
+export const techIconMap: { [key: string]: string } = availableTech.reduce(
+  (acc, tech) => ({ ...acc, [tech.name]: tech.icon }),
+  {}
+);
